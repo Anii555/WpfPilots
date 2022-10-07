@@ -20,71 +20,117 @@ namespace WpfPilots
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Deck Deck;
+        private Style _verticalButtonStyle;
+        private Style _horizontalButtonStyle;
+        private Random _random;
+        private Button[,] _buttons;
+        private int _quantity;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            _verticalButtonStyle = this.FindResource("VerticalButton") as Style;
+            _horizontalButtonStyle = this.FindResource("HorizontalButton") as Style;
+            _random = new Random();
         }
 
-        private Button[,] CreateButtons(int quantity)
+        private List<List<LevelArm>> GenerateGrid()
         {
-            Button[,] buttons = new Button[quantity, quantity];
-            int[] position = new int[2] { 50, 20 }; //положение по горизонтали
-            Random random = new Random();
+            var result = new List<List<LevelArm>>(_quantity);
 
-            for (int i = 0; i < quantity; i++)
+            for (var i = 0; i < _quantity; i++)
             {
-                for (int j = 0; j < quantity; j++)
-                {
-                    buttons[i, j] = new Button();
-                    buttons[i, j].Width = position[random.Next(0,2)]; //50
-                    buttons[i, j].Height = buttons[i, j].Width == 50 ? 20 : 50; 
-                    buttons[i, j].VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                    buttons[i, j].HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                    buttons[i, j].Margin = new Thickness(10);
-                    buttons[i, j].Click += ChangePosition_Click;
+                var list = new List<LevelArm>(_quantity);
 
-                    string position_name = $"btn_{i}_{j}".ToString();
-                    buttons[i, j].Name = position_name;
+                for (var j = 0; j < _quantity; j++)
+                {
+                    var isVertical = _random.Next(0, 2) == 1;
+                    var levelArm = new LevelArm
+                    {
+                        IsVertical = isVertical,
+                        Column = j,
+                        Row = i,
+                    };
+
+                    list.Add(levelArm);
                 }
+
+                result.Add(list);
             }
-            return buttons;
+
+            return result;
         }
 
-        private void AddToWrapPanel(int quantity, Button[,] buttons)
+        private void CreateButtons()
         {
-            for (int i = 0; i < quantity; i++)
-                for (int j = 0; j < quantity; j++)
+            _buttons = new Button[_quantity, _quantity];
+            var grid = GenerateGrid();
+            Deck = new Deck(grid);
+
+            foreach (var levelArm in Deck.AllArms)
+            {
+                var button = new Button();
+                button.Style = levelArm.IsVertical ? _verticalButtonStyle : _horizontalButtonStyle;
+                button.Click += ChangePosition_Click;
+
+                _buttons[levelArm.Column, levelArm.Row] = button;
+            }
+        }
+
+        private void PrintButtons()
+        {
+            if (uniformdGrid.Children.Count > 0)
+                uniformdGrid.Children.Clear();
+
+            for (int i = 0; i < _quantity; i++)
+                for (int j = 0; j < _quantity; j++)
                 {
-                    uniformdGrid.Children.Add(buttons[i, j]);
+                    uniformdGrid.Children.Add(_buttons[j, i]);
                 }
         }
 
-        private int GetQuantityButtons()
+        private void SetQuantityButtons()
         {
-            ComboBoxItem item = (ComboBoxItem)cmbBox.SelectedItem;
-            int count = int.Parse((string)item.Content);
-            return count;
+            var item = (ComboBoxItem)cmbBox.SelectedItem;
+            _quantity = int.Parse((string)item.Content);
         }
 
         private void СreateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (uniformdGrid.Children.Count > 0)
-                uniformdGrid.Children.Clear();
-            int count = GetQuantityButtons();
-            Button[,] buttons = CreateButtons(count);
-            AddToWrapPanel(count, buttons);
+            SetQuantityButtons();
+            CreateButtons();
+            uniformdGrid.Columns = _quantity;
+            uniformdGrid.Rows = _quantity;
+            PrintButtons();
         }
 
         private void ChangePosition_Click(object sender, RoutedEventArgs e)
         {
-            Button btn = sender as Button;
-            string[] name_btn = btn.Name.Split('_');
-            string current_row = name_btn[1];
-            string current_column = name_btn[2];
+            int index = uniformdGrid.Children.IndexOf((Button)sender);
 
-            MessageBox.Show("Столбец такой-то: " + current_column + " | Строка такая-то: " + current_row);
-            btn.Height = btn.Width == 50 ? 50 : 20;
-            btn.Width = btn.Height == 50 ? 20 : 50;
+            int current_row = index / uniformdGrid.Columns;
+            int current_column = index % uniformdGrid.Columns;
+
+            UpdateButtons(current_column, current_row);
+        }
+
+        private void UpdateButtons(int column, int row)
+        {
+            for (int i = 0; i < _quantity; i++)
+            {
+                if (i == column) continue;
+
+                var button = _buttons[i, row];
+                button.Style = button.Width > button.Height ? _verticalButtonStyle : _horizontalButtonStyle;
+            }
+
+            for (int j = 0; j < _quantity; j++)
+            {
+                var button = _buttons[column, j];
+                button.Style = button.Width > button.Height ? _verticalButtonStyle : _horizontalButtonStyle;
+            }
         }
     }
 }

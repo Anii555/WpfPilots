@@ -6,7 +6,33 @@
         xmlns:local="clr-namespace:WpfPilots"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid  Background="#FF19A1AF">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="ButtonStyle">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+        <Style TargetType="Button" x:Key="VerticalButton">
+            <Setter Property="Foreground" Value="Green" />
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="50" />
+        </Style>
+        <Style TargetType="Button" x:Key="HorizontalButton">
+            <Setter Property="Foreground" Value="Red" />
+            <Setter Property="Width" Value="50" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+        <DataTemplate x:Key="DataTemplate_Level1">
+            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource DataTemplate_Level2}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </DataTemplate>
+
+    </Window.Resources>
+    <Grid>
         <Label Content="Welcome to game of Pilot's brothers" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Height="50"/>
         <Canvas HorizontalAlignment="Center" Margin="0,67,0,339" Width="368" Height="30">
             <ComboBox x:Name="cmbBox"  Width="120" HorizontalAlignment="Left" Margin="153,0,0,0">
@@ -19,9 +45,7 @@
             <Label Content="Задайте размер матрицы:" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="153"/>
         </Canvas>
 
-        <UniformGrid x:Name="uniformdGrid" HorizontalAlignment="Center"
-    Columns="{Binding ElementName=cmbBox, Path=SelectedItem.Content}" 
-    Rows="{Binding ElementName=cmbBox, Path=SelectedItem.Content}" Margin="0,124,0,0">
+        <UniformGrid x:Name="uniformdGrid" HorizontalAlignment="Center" Margin="0,124,0,0">
         </UniformGrid>
     </Grid>
 </Window>
