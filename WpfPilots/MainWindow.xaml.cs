@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogicLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,56 +21,28 @@ namespace WpfPilots
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Deck Deck;
+        private readonly Logic _logic;
         private Style _verticalButtonStyle;
         private Style _horizontalButtonStyle;
-        private Random _random;
         private Button[,] _buttons;
         private int _quantity;
 
         public MainWindow()
         {
+            _logic = new Logic();
+
             InitializeComponent();
 
             _verticalButtonStyle = this.FindResource("VerticalButton") as Style;
             _horizontalButtonStyle = this.FindResource("HorizontalButton") as Style;
-            _random = new Random();
-        }
-
-        private List<List<LevelArm>> GenerateGrid()
-        {
-            var result = new List<List<LevelArm>>(_quantity);
-
-            for (var i = 0; i < _quantity; i++)
-            {
-                var list = new List<LevelArm>(_quantity);
-
-                for (var j = 0; j < _quantity; j++)
-                {
-                    var isVertical = _random.Next(0, 2) == 1;
-                    var levelArm = new LevelArm
-                    {
-                        IsVertical = isVertical,
-                        Column = j,
-                        Row = i,
-                    };
-
-                    list.Add(levelArm);
-                }
-
-                result.Add(list);
-            }
-
-            return result;
         }
 
         private void CreateButtons()
         {
             _buttons = new Button[_quantity, _quantity];
-            var grid = GenerateGrid();
-            Deck = new Deck(grid);
+            var deck = _logic.GenerateDeck(_quantity);
 
-            foreach (var levelArm in Deck.AllArms)
+            foreach (var levelArm in deck.AllArms)
             {
                 var button = new Button();
                 button.Style = levelArm.IsVertical ? _verticalButtonStyle : _horizontalButtonStyle;
@@ -118,6 +91,8 @@ namespace WpfPilots
 
         private void UpdateButtons(int column, int row)
         {
+            _logic.ChangePosition(column, row);
+
             for (int i = 0; i < _quantity; i++)
             {
                 if (i == column) continue;
