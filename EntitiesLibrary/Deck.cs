@@ -12,6 +12,7 @@ namespace WpfPilots
     public class Deck
     {
         private bool _isSafeOpened;
+        public int counter;
 
         /// <summary>
         /// Сейф открыт, игра окончена

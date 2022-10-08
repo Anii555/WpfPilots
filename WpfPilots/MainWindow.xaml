@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfPilots"
         mc:Ignorable="d"
-        Title="MainWindow" Height="526" Width="787">
+        Title="Pilot's game" Height="526" Width="787">
     <Window.Resources>
         <Style TargetType="Button" x:Key="ButtonStyle">
             <Setter Property="FontSize" Value="12" />
@@ -32,25 +32,32 @@
         </DataTemplate>
 
     </Window.Resources>
-    <Grid>
-        <Label Content="Welcome to game of Pilot's brothers" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Height="50"/>
-        <Canvas HorizontalAlignment="Center" Margin="0,55,0,0" Width="368" Height="30" VerticalAlignment="Top">
-            <ComboBox x:Name="cmbBox"  Width="120" HorizontalAlignment="Left" Margin="153,0,0,0">
-                <ComboBoxItem Content="2"/>
-                <ComboBoxItem Content="3"/>
-                <ComboBoxItem Content="4"/>
-                <ComboBoxItem Content="5"/>
-                <ComboBoxItem Content="6"/>
-                <ComboBoxItem Content="7"/>
-                <ComboBoxItem Content="8"/>
-                <ComboBoxItem Content="9"/>
-                <ComboBoxItem Content="10"/>
-            </ComboBox>
-            <Button Content="Создать" Click="СreateButton_Click" Margin="278,0,0,0"/>
+    <Grid Margin="0,-1,0,1">
+        <Label Content="Welcome to game of Pilot's brothers" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Height="44"/>
 
-            <Label Content="Задайте размер матрицы:" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="153"/>
-        </Canvas>
+        <UniformGrid x:Name="uniformdGrid" HorizontalAlignment="Center" Margin="0,91,0,0" Height="403" VerticalAlignment="Top"/>
+        <Grid HorizontalAlignment="Center" Height="30" Margin="0,49,0,0" VerticalAlignment="Top" Width="516">
+            <Canvas HorizontalAlignment="Left" Width="368" Height="30" VerticalAlignment="Center">
+                <ComboBox x:Name="cmbBox" Height="25" Width="120" HorizontalAlignment="Left" Margin="153,0,0,0">
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="4"/>
+                    <ComboBoxItem Content="5"/>
+                    <ComboBoxItem Content="6"/>
+                    <ComboBoxItem Content="7"/>
+                    <ComboBoxItem Content="8"/>
+                    <ComboBoxItem Content="9"/>
+                    <ComboBoxItem Content="10"/>
+                </ComboBox>
+                <Button Content="Создать" Click="СreateButton_Click" Height="25" Canvas.Left="278" Width="49"/>
 
-        <UniformGrid x:Name="uniformdGrid" HorizontalAlignment="Center" Margin="0,0,0,10" Height="403" VerticalAlignment="Bottom"/>
+                <Label Content="Задайте размер матрицы:" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="153"/>
+            </Canvas>
+
+            <Grid HorizontalAlignment="Left" Margin="350,0,0,0" VerticalAlignment="Center" Width="166">
+                <Label x:Name="Counter" Content="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="118,-2,0,0" VerticalAlignment="Top" Background="#FF88DDE3" Height="25" Width="48" FontWeight="Bold"/>
+                <Label Content="Количество ходов:" HorizontalAlignment="Left" Margin="0,0,0,1" Height="26" VerticalAlignment="Bottom"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
