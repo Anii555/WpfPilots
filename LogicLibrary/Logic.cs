@@ -10,6 +10,8 @@ namespace LogicLibrary
         public Deck Deck { get; private set; }
         private Random _random;
 
+        public bool IsGameOver => Deck.IsSafeOpened;
+
         public Logic()
         {
             _random = new Random();
@@ -19,6 +21,11 @@ namespace LogicLibrary
         {
             var grid = GenerateGrid(quantity);
             Deck = new Deck(grid);
+
+            if (Deck.IsSafeOpened)
+            {
+                return GenerateDeck(quantity);
+            }
 
             return Deck;
         }
@@ -50,9 +57,19 @@ namespace LogicLibrary
             return result;
         }
 
-        public void ChangePosition(int column, int row)
+        /// <summary>
+        /// »зменение позиции рычагов на поле по координате
+        /// </summary>
+        /// <returns>ѕоказатель, что позиции рычагов были изменены.
+        /// false обозначает, что сейф открыт.</returns>
+        public bool ChangePosition(int column, int row)
         {
-            Deck.ChangePosition(column, row);
+            if (Deck.IsSafeOpened)
+            {
+                return false;
+            }
+
+            return Deck.ChangePosition(column, row);
         }
     }
 }

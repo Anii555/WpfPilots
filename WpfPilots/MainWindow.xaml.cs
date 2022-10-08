@@ -50,6 +50,8 @@ namespace WpfPilots
 
                 _buttons[levelArm.Column, levelArm.Row] = button;
             }
+
+            PrintButtons();
         }
 
         private void PrintButtons()
@@ -73,10 +75,9 @@ namespace WpfPilots
         private void СreateButton_Click(object sender, RoutedEventArgs e)
         {
             SetQuantityButtons();
-            CreateButtons();
             uniformdGrid.Columns = _quantity;
             uniformdGrid.Rows = _quantity;
-            PrintButtons();
+            CreateButtons();
         }
 
         private void ChangePosition_Click(object sender, RoutedEventArgs e)
@@ -87,24 +88,47 @@ namespace WpfPilots
             int current_column = index % uniformdGrid.Columns;
 
             UpdateButtons(current_column, current_row);
+            
+            if (_logic.IsGameOver)
+            {
+                GameOver();
+            }
         }
 
         private void UpdateButtons(int column, int row)
         {
-            _logic.ChangePosition(column, row);
+            var positionChanged = _logic.ChangePosition(column, row);
 
+            if (!positionChanged)
+            {              
+                return;
+            }
+
+            // Переворачиваем все кнопки в ряду
             for (int i = 0; i < _quantity; i++)
             {
+                // Не переворачиваем нажатую кнопку
                 if (i == column) continue;
 
                 var button = _buttons[i, row];
                 button.Style = button.Width > button.Height ? _verticalButtonStyle : _horizontalButtonStyle;
             }
 
+            // Переворачиваем все кнопки в столбце, включая нажатую
             for (int j = 0; j < _quantity; j++)
             {
                 var button = _buttons[column, j];
                 button.Style = button.Width > button.Height ? _verticalButtonStyle : _horizontalButtonStyle;
+            }
+        }
+
+        public void GameOver()
+        {
+            var answer = MessageBox.Show("Поздравляю, вы прошли игру! Начать новую?", Title, MessageBoxButton.YesNo);
+
+            if (answer == MessageBoxResult.Yes) 
+            {
+                CreateButtons();
             }
         }
     }
