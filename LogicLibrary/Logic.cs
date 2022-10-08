@@ -22,7 +22,7 @@ namespace LogicLibrary
             var grid = GenerateGrid(quantity);
             Deck = new Deck(grid);
 
-            if (Deck.IsSafeOpened)
+            if (!DeckHasSolution())
             {
                 return GenerateDeck(quantity);
             }
@@ -55,6 +55,12 @@ namespace LogicLibrary
             }
 
             return result;
+        }
+
+        private bool DeckHasSolution() 
+        {
+            // Не успела найти логику, как игра может быть нерешаемой
+            return !Deck.IsSafeOpened;
         }
 
         /// <summary>
