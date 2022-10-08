@@ -37,6 +37,7 @@
         <Canvas HorizontalAlignment="Center" Margin="0,67,0,339" Width="368" Height="30">
             <ComboBox x:Name="cmbBox"  Width="120" HorizontalAlignment="Left" Margin="153,0,0,0">
                 <ComboBoxItem Content="2"/>
+                <ComboBoxItem Content="3"/>
                 <ComboBoxItem Content="4"/>
                 <ComboBoxItem Content="8"/>
             </ComboBox>
