@@ -12,12 +12,14 @@ namespace WpfPilots
     public class Deck
     {
         private bool _isSafeOpened;
-        public int counter;
+        private int _counter = 0;
 
         /// <summary>
         /// Сейф открыт, игра окончена
         /// </summary>
         public bool IsSafeOpened => _isSafeOpened || CheckSafeOpened();
+
+        public int Counter => _counter;
 
         private bool CheckSafeOpened()
         {
@@ -64,6 +66,7 @@ namespace WpfPilots
             levelArm.IsVertical = !levelArm.IsVertical;
             Columns.GetValueOrDefault(column).ForEach(c => c.IsVertical = !c.IsVertical);
             Rows.GetValueOrDefault(row).ForEach(r => r.IsVertical = !r.IsVertical);
+            _counter++;
 
             return true;
         }

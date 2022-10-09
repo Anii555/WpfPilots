@@ -21,7 +21,6 @@ namespace LogicLibrary
         {
             var grid = GenerateGrid(quantity);
             Deck = new Deck(grid);
-            Deck.counter = 0;
 
             if (!DeckHasSolution())
             {
@@ -58,7 +57,7 @@ namespace LogicLibrary
             return result;
         }
 
-        private bool DeckHasSolution() 
+        private bool DeckHasSolution()
         {
             // Не успела найти логику, как игра может быть нерешаемой
             return !Deck.IsSafeOpened;
@@ -77,8 +76,6 @@ namespace LogicLibrary
             }
 
             var isChangePosition = Deck.ChangePosition(column, row);
-
-            if (isChangePosition) { Deck.counter++; }
 
             return isChangePosition;
         }

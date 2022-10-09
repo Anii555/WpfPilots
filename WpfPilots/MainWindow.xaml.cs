@@ -26,7 +26,6 @@ namespace WpfPilots
         private Style _horizontalButtonStyle;
         private Button[,] _buttons;
         private int _quantity;
-        public int count;
 
         public MainWindow()
         {
@@ -65,6 +64,7 @@ namespace WpfPilots
                 {
                     uniformdGrid.Children.Add(_buttons[j, i]);
                 }
+
             UpdateCounter();
         }
 
@@ -80,7 +80,6 @@ namespace WpfPilots
             uniformdGrid.Columns = _quantity;
             uniformdGrid.Rows = _quantity;
             CreateButtons();
-            UpdateCounter();
         }
 
         private void ChangePosition_Click(object sender, RoutedEventArgs e)
@@ -128,7 +127,7 @@ namespace WpfPilots
 
         private void UpdateCounter()
         {
-            Counter.Content = _logic.Deck.counter;
+            Counter.Content = _logic.Deck.Counter;
         }
 
         public void GameOver()
