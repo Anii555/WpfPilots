@@ -62,7 +62,7 @@ namespace WpfPilots
 
         public bool ChangePosition(int column, int row)
         {
-            var levelArm = Grid.ElementAt(column).ElementAt(row);
+            var levelArm = Grid.ElementAt(row).ElementAt(column);
             levelArm.IsVertical = !levelArm.IsVertical;
             Columns.GetValueOrDefault(column).ForEach(c => c.IsVertical = !c.IsVertical);
             Rows.GetValueOrDefault(row).ForEach(r => r.IsVertical = !r.IsVertical);
