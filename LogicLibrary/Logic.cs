@@ -57,7 +57,7 @@ namespace LogicLibrary
             return result;
         }
 
-        private bool DeckHasSolution() 
+        private bool DeckHasSolution()
         {
             // Не успела найти логику, как игра может быть нерешаемой
             return !Deck.IsSafeOpened;
@@ -75,7 +75,9 @@ namespace LogicLibrary
                 return false;
             }
 
-            return Deck.ChangePosition(column, row);
+            var isChangePosition = Deck.ChangePosition(column, row);
+
+            return isChangePosition;
         }
     }
 }

@@ -64,6 +64,8 @@ namespace WpfPilots
                 {
                     uniformdGrid.Children.Add(_buttons[j, i]);
                 }
+
+            UpdateCounter();
         }
 
         private void SetQuantityButtons()
@@ -88,7 +90,8 @@ namespace WpfPilots
             int current_column = index % uniformdGrid.Columns;
 
             UpdateButtons(current_column, current_row);
-            
+            UpdateCounter();
+
             if (_logic.IsGameOver)
             {
                 GameOver();
@@ -120,6 +123,11 @@ namespace WpfPilots
                 var button = _buttons[column, j];
                 button.Style = button.Width > button.Height ? _verticalButtonStyle : _horizontalButtonStyle;
             }
+        }
+
+        private void UpdateCounter()
+        {
+            Counter.Content = _logic.Deck.Counter;
         }
 
         public void GameOver()
